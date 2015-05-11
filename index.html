@@ -37,8 +37,8 @@
         //
         .replace(/\[(.+?)\]\((.+?)(\s".*")?\)/gmi,'[url=$2]$1[/url]') // url
         //
-        .replace(/^(.+)(\n|\r\n)([=]{3,3}\s*(\n|\r\n)?)$/gmi, "[h1]$1[/h1]") // h1
-        .replace(/^(.+)(\n|\r\n)([-]{3,3}\s*(\n|\r\n)?)$/gmi, "[h2]$1[/h2]") // h2
+        .replace(/^(.+)(\n|\r\n)([=]{3,100}\s*(\n|\r\n)?)$/gmi, "[h1]$1[/h1]") // h1
+        .replace(/^(.+)(\n|\r\n)([-]{3,100}\s*(\n|\r\n)?)$/gmi, "[h2]$1[/h2]") // h2
         //
         .replace(/^[#]{6,6}\s*(.*[^\s])\s*[#]{6,6}\n?$/gmi, "[h6]$1[/h6]") // h6
         .replace(/^[#]{6,6}\s*(.*)\n?$/gmi, "[h6]$1[/h6]") // h6
@@ -101,7 +101,7 @@
         .replace(/\[i\]((?:.|\n)+?)\[\/i\]/gmi, "`$1`")  //italic; replace [i] $1 [/i] with ` $1 `
         .replace(/\[em\]((?:.|\n)+?)\[\/em\]/gmi, "`$1`")  //italic; replace [em] $1 [/em] with ` $1 `
         //
-        .replace(/\[code\]((?:.|\n)+?)\[\/code\]/gmi, "~~~\n$1\n~~~\n")  //code; replace [code] $1 [/code] with $1 also adds a new line. Feral specific.
+        .replace(/\[code\]((?:.|\n)+?)\[\/code\]/gmi, "```\n$1\n```\n")  //code; replace [code] $1 [/code] with $1 also adds a new line. Feral specific.
         .replace(/\[code single\]((?:.|\n)+?)\[\/code\]/gmi, "`$1\`")  //code; replace [code single] $1 [/code] with $1. Feral specific.
         //
         .replace(/\[img\]((?:.|\n)+?)\[\/img\]/gmi,'![]($1)')
@@ -122,11 +122,8 @@
     <div class="row">
         <div class="large-12 columns">
             <h2>Markdown to BBcode</h2>
-            <a class="small button" href="https://github.com/feralhosting/markdown-to-bbcode">Fork/Contribute to this version</a>
-            <a class="small button" href="http://feralhosting.github.io/">Return to feralhosting.github.io</a>
-            <a class="small button" href="http://feralhosting.github.io/b2m/index.html">BBCode to Markdown</a>
-            <a class="small button" href="https://www.feralhosting.com/faq/">Return to Feral FAQs</a>
-            <a class="small button" href="http://github.com/JonDum/BBCode-To-Markdown-Converter">Credits</a>            
+            <a class="small button" href="https://github.com/ohnx/mbtools">Fork/Contribute to this version</a>
+            <a class="small button" href="http://feralhosting.github.io/">Credits</a>            
         </div>
     </div>
 
@@ -136,9 +133,7 @@
             <div class="row">
                 <div class="large-12 columns">
                     <div class="panel">
-                        <p>
-                        Paste your Markdown formatted text into the top box and Feral FAQ formatted BBCode appears in the bottom. Indented code will have the space/tabs stripped. You have to manually apply <kbd>[code][/code]</kbd> tags to these. Github style <kbd>```</kbd> code tags or <kbd>~~~</kbd> will be replaced with <kbd>[code]some code[/code]</kbd> tags.
-                            </p>
+                      Paste markdown in the top to get BBcode in the bottom, or BBcode in the bottom to get Markdown in the top.
                     </div>
                 </div>
             </div>
@@ -170,7 +165,7 @@
             md.select();
         };
         bbc.onfocus = function() {
-            textBoxr.select();
+            bbc.select();
         };
         // http://stackoverflow.com/questions/5797539/jquery-select-all-text-from-a-textarea
     </script>
