@@ -26,10 +26,10 @@
     }
     </style>
     <script type="text/javascript">
-    function convert()
+    function m2b()
     {
-    var left = document.getElementById("left_ta");
-    var right = document.getElementById("right_ta");
+    var left = document.getElementById("markdown");
+    var right = document.getElementById("bbcode");
     
     var left_value = left.value;
         //general Markdown conversion
@@ -75,6 +75,47 @@
         right.value = left_value;
         console.log('converted');
     }
+    function b2m()
+    {
+    var left = document.getElementById("markdown");
+    var right = document.getElementById("bbcode");
+
+    var left_value = left.value;
+
+    //general BBcode conversion
+    left_value = left_value
+        .replace(/^(.*)$/m, "\n$1")
+        .replace(/^\[h1\](.*)\[\/h1\]\s*$/gmi, "$1\n===\n") //h4; replace [h1] $1 [/h1] with # $1 adds a new line. Feral specific.
+        .replace(/^\[h2\](.*)\[\/h2\]\s*$/gmi, "$1\n---\n") //h2; replace [h2] $1 [/h2] with ## $1 adds a new line. Feral specific.
+        .replace(/^\[h3\](.*)\[\/h3\]\s*$/gmi, "### $1\n") //h3; replace [h3] $1 [/h3] with ### $1 adds a new line. Feral specific.
+        .replace(/^\[h4\](.*)\[\/h4\]\s*$/gmi, "#### $1\n") //h4; replace [h4] $1 [/h4] with #### $1 adds a new line. Feral specific.
+        .replace(/^\[h5\](.*)\[\/h5\]\s*$/gmi, "##### $1\n") //h2; replace [h5] $1 [/h5] with ##### $1 adds a new line. Feral specific.
+        .replace(/^\[h6\](.*)\[\/h6\]\s*$/gmi, "###### $1\n") //h3; replace [h6] $1 [/h6] with ###### $1 adds a new line. Feral specific.
+        //
+        .replace(/\[b\]\[i\]((?:.|\n)+?)\[\/i\]\[\/b\]/gmi, "***$1***") //bold + italic; replace [b][i] $1 [/i][/b] with ***$1***
+        .replace(/\[i\]\[b\]((?:.|\n)+?)\[\/b\]\[\/i\]/gmi, "***$1***") //bold + italic; replace [b][i] $1 [/i][/b] with ***$1***
+        //
+        .replace(/\[b\]((?:.|\n)+?)\[\/b\]/gmi, "**$1**") //bold; replace [b] $1 [/b] with ** $1 **
+        .replace(/\[strong\]((?:.|\n)+?)\[\/strong\]/gmi, "**$1**") //bold; replace [b] $1 [/b] with ** $1 **
+        //
+        .replace(/\[i\]((?:.|\n)+?)\[\/i\]/gmi, "`$1`")  //italic; replace [i] $1 [/i] with ` $1 `
+        .replace(/\[em\]((?:.|\n)+?)\[\/em\]/gmi, "`$1`")  //italic; replace [em] $1 [/em] with ` $1 `
+        //
+        .replace(/\[code\]((?:.|\n)+?)\[\/code\]/gmi, "~~~\n$1\n~~~\n")  //code; replace [code] $1 [/code] with $1 also adds a new line. Feral specific.
+        .replace(/\[code single\]((?:.|\n)+?)\[\/code\]/gmi, "`$1\`")  //code; replace [code single] $1 [/code] with $1. Feral specific.
+        //
+        .replace(/\[img\]((?:.|\n)+?)\[\/img\]/gmi,'![]($1)')
+        //
+        .replace(/\[url\]((?:.|\n)+?)\[\/url\]/gmi,'[$1]($1)')
+        .replace(/\[url=(.+?)\]((?:.|\n)+?)\[\/url\]/gmi,'[$2]($1)');                   
+        //.replace(/\[s\]((?:.|\n)+?)\[\/s\]/gmi, "~~   $1 ~~") //strikethrough; replace [s] $1 [/s] with ~~ $1 ~~
+        //.replace(/\[color\=.+?\]((?:.|\n)+?)\[\/color\]/gmi, "$1") //remove [color] tags
+        //.replace(/(\n)\[\*\]/gmi, "$1* ") //lists; replace lists with + unordered lists.
+        //.replace(/\[\/*list\]/gmi, '')
+        //.replace(/\[u\]((?:.|\n)+?)\[\/u\]/gmi, "*$1*")    //underline; replace [u] $1 [/u] with * $1 *
+    right.value = left_value;   
+    console.log('converted');
+    }
     </script>
   </head>
   <body>
@@ -115,14 +156,14 @@
             <div class="row">
                 <div class="large-12 columns mycustom1">
                     <div class="panel textdivsize">
-                        <textarea id="left_ta" class="textareasize" onChange="convert()" onKeyUp="convert()" placeholder="Enter your Markdown formatted text here" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your Markdown formatted text here'"></textarea>
+                        <textarea id="markdown" class="textareasize" onChange="m2b()" onKeyUp="m2b()" placeholder="Enter your Markdown formatted text here" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Enter your Markdown formatted text here'"></textarea>
                     </div>
                 </div>
             </div>
             <div class="row">
                 <div class="large-12 columns mycustom1">
                     <div class="panel textdivsize">
-                        <textarea id="right_ta" class="textareasize" placeholder="Your BBCode formatted text will be automatically shown in this box" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your BBCode formatted text will be automatically shown in this box'"></textarea>
+                        <textarea id="bbcode" class="textareasize" onChange="b2m()" onKeyUp="b2m()" placeholder="Your BBCode formatted text will be automatically shown in this box" onfocus="this.placeholder = ''" onblur="this.placeholder = 'Your BBCode formatted text will be automatically shown in this box'"></textarea>
                     </div>
                 </div>
             </div>
@@ -134,23 +175,13 @@
       $(document).foundation();
     </script>
     <script type="text/javascript">
-        var textBoxl = document.getElementById("left_ta");
-        var textBoxr = document.getElementById("right_ta");
-        textBoxl.onfocus = function() {
-            textBoxl.select();
-
-            textBoxl.onmouseup = function() {
-                textBoxl.onmouseup = null;
-                return false;
-            };
+        var md = document.getElementById("markdown");
+        var bbc = document.getElementById("bbcode");
+        md.onfocus = function() {
+            md.select();
         };
-            textBoxr.onfocus = function() {
+        bbc.onfocus = function() {
             textBoxr.select();
-
-            textBoxr.onmouseup = function() {
-                textBoxr.onmouseup = null;
-                return false;
-            };
         };
         // http://stackoverflow.com/questions/5797539/jquery-select-all-text-from-a-textarea
     </script>
