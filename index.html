@@ -28,12 +28,12 @@
     <script type="text/javascript">
     function m2b()
     {
-    var left = document.getElementById("markdown");
-    var right = document.getElementById("bbcode");
+    var md = document.getElementById("markdown");
+    var bbc = document.getElementById("bbcode");
     
-    var left_value = left.value;
+    var convert = md.value;
         //general Markdown conversion
-        left_value = left_value
+        convert = convert
         //
         .replace(/\[(.+?)\]\((.+?)(\s".*")?\)/gmi,'[url=$2]$1[/url]') // url
         //
@@ -72,18 +72,18 @@
         .replace(/\*\*([^\*].*?)\*\*/gmi, "[b]$1[/b]") // bold
         .replace(/(\s)\*((?!\/[0-9]|\s|\*).*?)\*(\s)/gmi, "$1[i]$2[/i]$3")  // italic
         //
-        right.value = left_value;
+        bbc.value = convert;
         console.log('converted');
     }
     function b2m()
     {
-    var left = document.getElementById("markdown");
-    var right = document.getElementById("bbcode");
+    var md = document.getElementById("markdown");
+    var bbc = document.getElementById("bbcode");
 
-    var left_value = left.value;
+    var convert = bbc.value;
 
     //general BBcode conversion
-    left_value = left_value
+    convert = convert
         .replace(/^(.*)$/m, "\n$1")
         .replace(/^\[h1\](.*)\[\/h1\]\s*$/gmi, "$1\n===\n") //h4; replace [h1] $1 [/h1] with # $1 adds a new line. Feral specific.
         .replace(/^\[h2\](.*)\[\/h2\]\s*$/gmi, "$1\n---\n") //h2; replace [h2] $1 [/h2] with ## $1 adds a new line. Feral specific.
@@ -113,7 +113,7 @@
         //.replace(/(\n)\[\*\]/gmi, "$1* ") //lists; replace lists with + unordered lists.
         //.replace(/\[\/*list\]/gmi, '')
         //.replace(/\[u\]((?:.|\n)+?)\[\/u\]/gmi, "*$1*")    //underline; replace [u] $1 [/u] with * $1 *
-    right.value = left_value;   
+    md.value = convert;   
     console.log('converted');
     }
     </script>
@@ -139,17 +139,6 @@
                         <p>
                         Paste your Markdown formatted text into the top box and Feral FAQ formatted BBCode appears in the bottom. Indented code will have the space/tabs stripped. You have to manually apply <kbd>[code][/code]</kbd> tags to these. Github style <kbd>```</kbd> code tags or <kbd>~~~</kbd> will be replaced with <kbd>[code]some code[/code]</kbd> tags.
                             </p>
-                        <p>
-                        For <kbd>H1</kbd> and <kbd>H2</kbd> tags do not use <kbd>#</kbd> and <kbd>##</kbd>. Instead use <kbd>===</kbd> underneath for <kbd>H1</kbd> and <kbd>---</kbd> underneath for <kbd>H2</kbd> or they will not be converted. So for example:
-                            </p>
-                        <div>
-                            <pre><code>Sometitle H1</code></pre>
-                            <pre><code>===</code></pre>
-                            <p>
-                                </p>
-                            <pre><code>Sometitle H2</code></pre>
-                            <pre><code>---</code></pre>
-                        </div>
                     </div>
                 </div>
             </div>
