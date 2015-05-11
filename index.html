@@ -36,6 +36,8 @@
         convert = convert
         //
         .replace(/\[(.+?)\]\((.+?)(\s".*")?\)/gmi,'[url=$2]$1[/url]') // url
+		//.replace(/http:\/\/([^\*].*?)\//gmi,'[url=http://$1/]http://$1/[/url]') // url
+		//.replace(/https:\/\/([^\*].*?)\//gmi,'[url=https://$1/]https://$1/[/url]') // url
         //
         .replace(/^(.+)(\n|\r\n)([=]{3,100}\s*(\n|\r\n)?)$/gmi, "[h1]$1[/h1]") // h1
         .replace(/^(.+)(\n|\r\n)([-]{3,100}\s*(\n|\r\n)?)$/gmi, "[h2]$1[/h2]") // h2
@@ -61,17 +63,23 @@
         .replace(/^(?!\n*[`]{3,3})[#]{1,1}\s*(.*)\n?$/gmi, "[h1]$1[/h1]") // h1
         //
         //.replace(/^\t|[ ]{4,4}(.*)/gmi, "$1")  //code; strips tabs
+		.replace(/^\`{3,3}html(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[html]$2[/html]")   // html code
+		.replace(/^\`{3,3}php(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[php]$2[/php]")   // php code
         .replace(/^\`{3,3}(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[code]$2[/code]")   // back ticks
-        .replace(/^\~{3,3}(.*)\n((?:.|\n)+?)\n\~{3,3}\n?$/gmi, "[code]$2[/code]")   // tilde
         .replace(/\`([^\`].*?)\`/gmi, "[code single]$1[/code]")  // inline code
         //
-        .replace(/\[!\[.*?\]\((.*?)\)\]\((.*?)\)/gmi,'[img]$1[/img]\nClickable image was pointing to [url=$2]here[/url]') //image
+        .replace(/\[!\[.*?\]\((.*?)\)\]\((.*?)\)/gmi,'[url=$2][img]$1[/img][/url]') //image
         .replace(/!\[(.*)\]\((.*)\)/gmi,'[img]$2[/img]') //image
         //
-        .replace(/\*\*\*([^\*].*?)\*\*\*/gmi, "[b][i]$1[/i][/b]") // bold + itlaic
+		//.replace(/^ ?\*((?:.|\n)+?)\n?$/gmi,'[list]\n[*]$1')
+		//
+        .replace(/\*\*\*([^\*].*?)\*\*\*/gmi, "[b][i]$1[/i][/b]") // bold + italics
         .replace(/\*\*([^\*].*?)\*\*/gmi, "[b]$1[/b]") // bold
-        .replace(/(\s)\*((?!\/[0-9]|\s|\*).*?)\*(\s)/gmi, "$1[i]$2[/i]$3")  // italic
-        //
+        .replace(/\*([^\*].*?)\*/gmi, "[i]$1[/i]") // italics
+		.replace(/___([^\*].*?)___/gmi, "[b][i]$1[/i][/b]") // bold + italics
+        .replace(/__([^\*].*?)__/gmi, "[b]$1[/b]") // bold
+		.replace(/~~([^\*].*?)~~/gmi, "[s]$1[/s]"); // strikethrough
+		
         bbc.value = convert;
         console.log('m2b');
     }
@@ -98,20 +106,22 @@
         .replace(/\[b\]((?:.|\n)+?)\[\/b\]/gmi, "**$1**") //bold; replace [b] $1 [/b] with ** $1 **
         .replace(/\[strong\]((?:.|\n)+?)\[\/strong\]/gmi, "**$1**") //bold; replace [b] $1 [/b] with ** $1 **
         //
-        .replace(/\[i\]((?:.|\n)+?)\[\/i\]/gmi, "`$1`")  //italic; replace [i] $1 [/i] with ` $1 `
-        .replace(/\[em\]((?:.|\n)+?)\[\/em\]/gmi, "`$1`")  //italic; replace [em] $1 [/em] with ` $1 `
+        .replace(/\[i\]((?:.|\n)+?)\[\/i\]/gmi, "*$1*")  //italic; replace [i] $1 [/i] with ` $1 `
+        .replace(/\[em\]((?:.|\n)+?)\[\/em\]/gmi, "*$1*")  //italic; replace [em] $1 [/em] with ` $1 `
         //
+		.replace(/\[php\]((?:.|\n)+?)\[\/php\]/gmi, "```php\n$1\n```\n")
+		.replace(/\[html\]((?:.|\n)+?)\[\/html\]/gmi, "```html\n$1\n```\n")
         .replace(/\[code\]((?:.|\n)+?)\[\/code\]/gmi, "```\n$1\n```\n")  //code; replace [code] $1 [/code] with $1 also adds a new line. Feral specific.
         .replace(/\[code single\]((?:.|\n)+?)\[\/code\]/gmi, "`$1\`")  //code; replace [code single] $1 [/code] with $1. Feral specific.
         //
         .replace(/\[img\]((?:.|\n)+?)\[\/img\]/gmi,'![]($1)')
         //
         .replace(/\[url\]((?:.|\n)+?)\[\/url\]/gmi,'[$1]($1)')
-        .replace(/\[url=(.+?)\]((?:.|\n)+?)\[\/url\]/gmi,'[$2]($1)');                   
-        //.replace(/\[s\]((?:.|\n)+?)\[\/s\]/gmi, "~~   $1 ~~") //strikethrough; replace [s] $1 [/s] with ~~ $1 ~~
-        //.replace(/\[color\=.+?\]((?:.|\n)+?)\[\/color\]/gmi, "$1") //remove [color] tags
-        //.replace(/(\n)\[\*\]/gmi, "$1* ") //lists; replace lists with + unordered lists.
-        //.replace(/\[\/*list\]/gmi, '')
+        .replace(/\[url=(.+?)\]((?:.|\n)+?)\[\/url\]/gmi,'[$2]($1)')                  
+        .replace(/\[s\]((?:.|\n)+?)\[\/s\]/gmi, "~~$1~~") //strikethrough; replace [s] $1 [/s] with ~~ $1 ~~
+        .replace(/\[color\=.+?\]((?:.|\n)+?)\[\/color\]/gmi, "$1") //remove [color] tags
+        .replace(/\[\*\]/gmi, "*") //lists; replace lists with + unordered lists.
+        .replace(/\[\/*list\](\n)/gmi, '');
         //.replace(/\[u\]((?:.|\n)+?)\[\/u\]/gmi, "*$1*")    //underline; replace [u] $1 [/u] with * $1 *
     md.value = convert;   
     console.log('b2m');
@@ -134,6 +144,7 @@
                 <div class="large-12 columns">
                     <div class="panel">
                       Paste markdown in the top to get BBcode in the bottom, or BBcode in the bottom to get Markdown in the top.
+					  Notable things: Lists don't work for Markdown.
                     </div>
                 </div>
             </div>
@@ -157,17 +168,6 @@
     <script src="js/foundation.min.js"></script>
     <script>
       $(document).foundation();
-    </script>
-    <script type="text/javascript">
-        var md = document.getElementById("markdown");
-        var bbc = document.getElementById("bbcode");
-        md.onfocus = function() {
-            md.select();
-        };
-        bbc.onfocus = function() {
-            bbc.select();
-        };
-        // http://stackoverflow.com/questions/5797539/jquery-select-all-text-from-a-textarea
     </script>
   </body>
 </html>
