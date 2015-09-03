@@ -3,11 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Markdown Github to BBCode Feral converter</title>
+    <title>Markdown Github to BBCode converter</title>
     <link rel="stylesheet" href="css/foundation.css" />
     <script src="js/vendor/modernizr.js"></script>
     <style type="text/css" media="screen">
-    .mycustom1 { 
+    .mycustom1 {
     }
     .textdivsize {  
     height: 300px;
@@ -36,8 +36,8 @@
         convert = convert
         //
         .replace(/\[(.+?)\]\((.+?)(\s".*")?\)/gmi,'[url=$2]$1[/url]') // url
-		//.replace(/http:\/\/([^\*].*?)\//gmi,'[url=http://$1/]http://$1/[/url]') // url
-		//.replace(/https:\/\/([^\*].*?)\//gmi,'[url=https://$1/]https://$1/[/url]') // url
+	.replace(/http:\/\/([^\*].*?)\//gmi,'[url=http://$1/]http://$1/[/url]') // url
+	.replace(/https:\/\/([^\*].*?)\//gmi,'[url=https://$1/]https://$1/[/url]') // url
         //
         .replace(/^(.+)(\n|\r\n)([=]{3,100}\s*(\n|\r\n)?)$/gmi, "[h1]$1[/h1]") // h1
         .replace(/^(.+)(\n|\r\n)([-]{3,100}\s*(\n|\r\n)?)$/gmi, "[h2]$1[/h2]") // h2
@@ -63,25 +63,23 @@
         .replace(/^(?!\n*[`]{3,3})[#]{1,1}\s*(.*)\n?$/gmi, "[h1]$1[/h1]") // h1
         //
         //.replace(/^\t|[ ]{4,4}(.*)/gmi, "$1")  //code; strips tabs
-		.replace(/^\`{3,3}html(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[html]$2[/html]")   // html code
-		.replace(/^\`{3,3}php(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[php]$2[/php]")   // php code
+	.replace(/^\`{3,3}html(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[html]$2[/html]")   // html code
+	.replace(/^\`{3,3}php(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[php]$2[/php]")   // php code
         .replace(/^\`{3,3}(.*)\n((?:.|\n)+?)\n\`{3,3}\n?$/gmi, "[code]$2[/code]")   // back ticks
         .replace(/\`([^\`].*?)\`/gmi, "[code single]$1[/code]")  // inline code
         //
         .replace(/\[!\[.*?\]\((.*?)\)\]\((.*?)\)/gmi,'[url=$2][img]$1[/img][/url]') //image
         .replace(/!\[(.*)\]\((.*)\)/gmi,'[img]$2[/img]') //image
         //
-		//.replace(/^ ?\*((?:.|\n)+?)\n?$/gmi,'[list]\n[*]$1')
-		//
+	//.replace(/^ ?\*((?:.|\n)+?)\n?$/gmi,'[list]\n[*]$1')
+	//
         .replace(/\*\*\*([^\*].*?)\*\*\*/gmi, "[b][i]$1[/i][/b]") // bold + italics
         .replace(/\*\*([^\*].*?)\*\*/gmi, "[b]$1[/b]") // bold
         .replace(/\*([^\*].*?)\*/gmi, "[i]$1[/i]") // italics
-		.replace(/___([^\*].*?)___/gmi, "[b][i]$1[/i][/b]") // bold + italics
+	.replace(/___([^\*].*?)___/gmi, "[b][i]$1[/i][/b]") // bold + italics
         .replace(/__([^\*].*?)__/gmi, "[b]$1[/b]") // bold
-		.replace(/~~([^\*].*?)~~/gmi, "[s]$1[/s]"); // strikethrough
-		
+	.replace(/~~([^\*].*?)~~/gmi, "[s]$1[/s]"); // strikethrough
         bbc.value = convert;
-        console.log('m2b');
     }
     function b2m()
     {
@@ -93,12 +91,12 @@
     //general BBcode conversion
     convert = convert
         .replace(/^(.*)$/m, "\n$1")
-        .replace(/^\[h1\](.*)\[\/h1\]\s*$/gmi, "$1\n===\n") //h4; replace [h1] $1 [/h1] with # $1 adds a new line. Feral specific.
-        .replace(/^\[h2\](.*)\[\/h2\]\s*$/gmi, "$1\n---\n") //h2; replace [h2] $1 [/h2] with ## $1 adds a new line. Feral specific.
+        .replace(/^\[h1\](.*)\[\/h1\]\s*$/gmi, "# $1\n") //h1; replace [h1] $1 [/h1] with # $1 adds a new line. Feral specific.
+        .replace(/^\[h2\](.*)\[\/h2\]\s*$/gmi, "## $1\n") //h2; replace [h2] $1 [/h2] with ## $1 adds a new line. Feral specific.
         .replace(/^\[h3\](.*)\[\/h3\]\s*$/gmi, "### $1\n") //h3; replace [h3] $1 [/h3] with ### $1 adds a new line. Feral specific.
         .replace(/^\[h4\](.*)\[\/h4\]\s*$/gmi, "#### $1\n") //h4; replace [h4] $1 [/h4] with #### $1 adds a new line. Feral specific.
-        .replace(/^\[h5\](.*)\[\/h5\]\s*$/gmi, "##### $1\n") //h2; replace [h5] $1 [/h5] with ##### $1 adds a new line. Feral specific.
-        .replace(/^\[h6\](.*)\[\/h6\]\s*$/gmi, "###### $1\n") //h3; replace [h6] $1 [/h6] with ###### $1 adds a new line. Feral specific.
+        .replace(/^\[h5\](.*)\[\/h5\]\s*$/gmi, "##### $1\n") //h5; replace [h5] $1 [/h5] with ##### $1 adds a new line. Feral specific.
+        .replace(/^\[h6\](.*)\[\/h6\]\s*$/gmi, "###### $1\n") //h6; replace [h6] $1 [/h6] with ###### $1 adds a new line. Feral specific.
         //
         .replace(/\[b\]\[i\]((?:.|\n)+?)\[\/i\]\[\/b\]/gmi, "***$1***") //bold + italic; replace [b][i] $1 [/i][/b] with ***$1***
         .replace(/\[i\]\[b\]((?:.|\n)+?)\[\/b\]\[\/i\]/gmi, "***$1***") //bold + italic; replace [b][i] $1 [/i][/b] with ***$1***
@@ -109,8 +107,8 @@
         .replace(/\[i\]((?:.|\n)+?)\[\/i\]/gmi, "*$1*")  //italic; replace [i] $1 [/i] with ` $1 `
         .replace(/\[em\]((?:.|\n)+?)\[\/em\]/gmi, "*$1*")  //italic; replace [em] $1 [/em] with ` $1 `
         //
-		.replace(/\[php\]((?:.|\n)+?)\[\/php\]/gmi, "```php\n$1\n```\n")
-		.replace(/\[html\]((?:.|\n)+?)\[\/html\]/gmi, "```html\n$1\n```\n")
+	.replace(/\[php\]((?:.|\n)+?)\[\/php\]/gmi, "```php\n$1\n```\n")
+	.replace(/\[html\]((?:.|\n)+?)\[\/html\]/gmi, "```html\n$1\n```\n")
         .replace(/\[code\]((?:.|\n)+?)\[\/code\]/gmi, "```\n$1\n```\n")  //code; replace [code] $1 [/code] with $1 also adds a new line. Feral specific.
         .replace(/\[code single\]((?:.|\n)+?)\[\/code\]/gmi, "`$1\`")  //code; replace [code single] $1 [/code] with $1. Feral specific.
         //
@@ -123,8 +121,7 @@
         .replace(/\[\*\]/gmi, "*") //lists; replace lists with + unordered lists.
         .replace(/\[\/*list\](\n)/gmi, '');
         //.replace(/\[u\]((?:.|\n)+?)\[\/u\]/gmi, "*$1*")    //underline; replace [u] $1 [/u] with * $1 *
-    md.value = convert;   
-    console.log('b2m');
+    	md.value = convert;
     }
     </script>
   </head>
